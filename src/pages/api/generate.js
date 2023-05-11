@@ -93,13 +93,13 @@ export default async function handler(req, res) {
   console.log({ response })
 
   if (!response.ok) {
-    console.error(response.statusText)
-    return res.status(500).json({ error: 'Something went wrong' })
+    const error = response.statusText
+    return res.status(500).json({ error: `Something went wrong ${error}` })
   }
 
   const { choices } = await response.json()
-  const data = choices?.[0]?.message
-  console.log(data)
+  const { content } = choices?.[0]?.message
+  console.log(content)
 
-  return res.status(200).json({ data })
+  return res.status(200).json({ data: content })
 }

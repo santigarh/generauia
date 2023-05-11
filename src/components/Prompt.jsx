@@ -1,25 +1,21 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
+import { useConversationsStore } from '@/stores/conversations'
 
 export function Prompt() {
   const textAreaRef = useRef()
 
+  const generateComponent = useConversationsStore(
+    (state) => state.generateComponent
+  )
+
+  const setPrompt = useConversationsStore((state) => state.setPrompt)
+  const prompt = useConversationsStore((state) => state.prompt)
+
   const handleSubmit = async (event) => {
     event.preventDefault()
-    const formData = new FormData(event.target)
-    const prompt = formData.get('prompt')
-
-    const response = await fetch(
-      `/api/generate?prompt=${prompt}&language=javascript&framework=react`,
-      {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      }
-    )
-    console.log({ response })
+    generateComponent({ prompt })
   }
 
   useEffect(() => {
@@ -31,6 +27,10 @@ export function Prompt() {
       <div className='relative block'>
         <textarea
           ref={textAreaRef}
+          onChange={(event) => {
+            const { value } = event.target
+            setPrompt(value)
+          }}
           placeholder='Crea un botón de color rojo con un borde de 2px y un borde redondeado de 5px.'
           rows={1}
           name='prompt'

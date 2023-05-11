@@ -1,7 +1,11 @@
+'use client'
 import { Blob } from '@/components/Blobs'
 import { Prompt } from '@/components/Prompt'
+import { useConversationsStore } from '@/stores/conversations'
 
 export default function Home() {
+  const code = useConversationsStore((state) => state.code)
+
   return (
     <main className=' px-10 py-24 relative min-h-screen w-screen'>
       <h1 className='mt-2 bg-gradient-to-br from-white to-slate-10 bg-clip-text text-transparent text-[35px] leading-[42px] sm:text-6xl tracking-[-0.64px] sm:leading-[68px] sm:tracking-[-0.896px] font-bold mb-12 animate-delay-200 animate-duration-1000 animate-fadeIn text-center'>
@@ -23,6 +27,13 @@ export default function Home() {
           <div className='w-full'>
             <Prompt />
           </div>
+          {code && (
+            <section className='mb-20 animate-fadeIn'>
+              <h3 className='pt-20 pb-10 text-4xl font-bold text-center text-transparent bg-clip-text bg-gradient-to-r from-purple-200 to-purple-400'>
+                Resultado
+              </h3>
+            </section>
+          )}
         </div>
       </div>
     </main>
